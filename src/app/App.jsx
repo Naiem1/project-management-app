@@ -1,8 +1,13 @@
+import { CssBaseline } from '@mui/material';
+import AppRouter from './router/AppRouter';
 
 const App = () => {
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <CssBaseline />
+      <AppRouter />
+    </>
+  );
+};
 
-export default App
+export default App;
