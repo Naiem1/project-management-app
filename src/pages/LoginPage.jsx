@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
+import { signInWithGoogle } from '../firebase';
 
 const INITIAL_STATE = {
   email: '',
@@ -116,13 +117,14 @@ const Login = () => {
           <Box sx={{ ml: '25px'}}>
             <img style={{ width: '35px' }} src={GoogleLogo} alt="google-logo" />
           </Box>
-          <Typography
+          {/* <Typography
             sx={{ fontWeight: 'bold', m: 'auto' }}
             component="h4"
             variant="h6"
           >
             Sign in With Google
-          </Typography>
+          </Typography> */}
+          <Button onClick={signInWithGoogle}>Signin With Google</Button>
         </Box>
       </Box>
     </Container>
