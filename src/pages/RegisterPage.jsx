@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import GoogleLogo from '../assets/images/google-logo.png';
 
 const INITIAL_STATE = {
   username: '',
@@ -105,10 +106,34 @@ const Register = () => {
           </Button>
 
           <Typography component="p">
-            <Link to="/login">Have an account? Login</Link>
+            <Link to="/login">Already have an account? Sign in</Link>
           </Typography>
 
         
+        </Box>
+      </Box>
+
+      <Box sx={{mt: '50px'}}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            border: '1px solid #E4E4E4',
+            borderRadius: '3px',
+            p: '10px',
+            cursor: 'pointer',
+          }}
+        >
+          <Box sx={{ ml: '25px'}}>
+            <img style={{ width: '35px' }} src={GoogleLogo} alt="google-logo" />
+          </Box>
+          <Typography
+            sx={{ fontWeight: 'bold', m: 'auto' }}
+            component="h4"
+            variant="h6"
+          >
+            Sign in With Google
+          </Typography>
         </Box>
       </Box>
     </Container>
