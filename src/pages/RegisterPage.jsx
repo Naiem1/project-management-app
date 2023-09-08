@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
 import { setUser } from '../store/slices/authSlice';
+import NestedModal from '../components/UI/UIModal';
+import BasicModal from '../components/UI/UIModal';
 
 const INITIAL_STATE = {
   username: '',
@@ -142,6 +144,7 @@ const Register = () => {
           </Typography>
         </Box>
       </Box>
+      <BasicModal/>
     </Container>
   );
 };

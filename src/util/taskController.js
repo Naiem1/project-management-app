@@ -22,7 +22,7 @@ export const postTaskToDB = ({
     status,
     assignedTo,
     user,
-  })
+  });
 
   const users = findFromStorage('users');
   if (!users) return false;
@@ -47,30 +47,50 @@ export const postTaskToDB = ({
 
   save('tasks', task);
 
-  return { created: true, task  };
+  return { created: true, task };
 };
-
-
-
 
 export const getTaskFromDB = (userId) => {
   console.log('userId', userId);
-  if (!userId) {
-    return { message: 'UserId is Missing' };
-  }
+    // if (!userId) {
+    //   return [];
+    // }
 
   const users = findFromStorage('users');
-  const user = users?.find(user => user.id === userId);
+  const user = users?.find((user) => user.id === userId);
 
   if (!user) {
     return { message: 'Invalid' };
   }
 
   const tasks = findFromStorage('tasks');
-  const task = tasks.filter(task => task.user.id === userId);
+  const task = tasks.filter((task) => task.user.id === userId);
   if (!task) {
     return { error: true, message: 'Task not found' };
   }
 
+  console.log(task);
+
   return task;
-}
+};
+
+export const deleteTaskFromDB = (id) => {
+  const tasks = findFromStorage('tasks');
+  if (!tasks) {
+    return false;
+  }
+
+  console.log('controller>>', tasks);
+  console.log('id>>', id);
+
+  const task = tasks.filter((task) => task.id !== id);
+  if (!task) {
+    return false;
+  }
+
+  console.log('controller-filterTask', task)
+
+  // save('tasks', task);
+  localStorage.setItem('tasks', JSON.stringify(task));
+
+};
