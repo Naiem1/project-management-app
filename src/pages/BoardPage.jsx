@@ -13,35 +13,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
-import { getTaskFromDB, postTaskToDB,  } from '../util/taskController';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const drawerWidth = 200;
 
 const Board = () => {
-
-  const authState = useSelector(state => state.auth);
-  console.log('board', authState);  
-  useEffect(() => {
-    const task = postTaskToDB({
-      title: 'Task1',
-      description: 'Description1',
-      assignedTo: 'user2',
-      user: authState.user,
-      dueDate: '10/12/2020',
-      priority: 'high',
-      status: 'Pending',
-    });
-
-    console.log('post-error', task);
-  }, []);
-
-  useEffect(() => {
-    const task = getTaskFromDB(authState.user.id);
-
-    console.log('getTaskFromDB', task);
-  }, []);
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+  const task = useSelector((state) => state.tasks.task);
+  console.log('board', authState);
 
   return (
     <Box sx={{ display: 'flex' }}>
