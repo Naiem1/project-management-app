@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
 import { setUser } from '../store/slices/authSlice';
 import NestedModal from '../components/UI/UIModal';
@@ -40,6 +40,7 @@ const Register = () => {
     dispatch(setUser({ ...formData }));
 
     setFormData({ ...INITIAL_STATE });
+    Navigate('/login', true);
   };
 
   console.log('[Register Page - authState]>>', authState);
@@ -112,7 +113,7 @@ const Register = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
 
           <Typography component="p">
@@ -132,19 +133,10 @@ const Register = () => {
             cursor: 'pointer',
           }}
         >
-          <Box sx={{ ml: '25px' }}>
-            <img style={{ width: '35px' }} src={GoogleLogo} alt="google-logo" />
-          </Box>
-          <Typography
-            sx={{ fontWeight: 'bold', m: 'auto' }}
-            component="h4"
-            variant="h6"
-          >
-            Sign in With Google
-          </Typography>
+
+  
         </Box>
       </Box>
-      <BasicModal/>
     </Container>
   );
 };

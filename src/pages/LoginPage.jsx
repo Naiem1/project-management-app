@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
 import { signInWithGoogle } from '../firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +40,7 @@ const Login = () => {
     dispatch(loginRequest({ ...credential }));
 
     setCredential({ ...INITIAL_STATE });
+    Navigate('/', true);
   };
 
 
@@ -114,27 +115,7 @@ const Login = () => {
       </Box>
 
       <Box sx={{mt: '50px'}}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            border: '1px solid #E4E4E4',
-            p: '10px',
-            cursor: 'pointer',
-          }}
-        >
-          <Box sx={{ ml: '25px'}}>
-            <img style={{ width: '35px' }} src={GoogleLogo} alt="google-logo" />
-          </Box>
-          {/* <Typography
-            sx={{ fontWeight: 'bold', m: 'auto' }}
-            component="h4"
-            variant="h6"
-          >
-            Sign in With Google
-          </Typography> */}
-          <Button onClick={signInWithGoogle}>Signin With Google</Button>
-        </Box>
+        
       </Box>
     </Container>
   );
