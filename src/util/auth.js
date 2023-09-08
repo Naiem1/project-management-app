@@ -2,7 +2,12 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuid } from 'uuid';
 import { findFromStorage, save } from './storage';
 
+// Register
 export const register = ({ username, email, password }) => {
+  if (!username || !email || !password) {
+    return { message: 'Input is Empty' };
+  }
+
   const users = findFromStorage('users');
 
   const salt = bcrypt.genSaltSync(10);
@@ -30,6 +35,7 @@ export const register = ({ username, email, password }) => {
   return { message: 'User Register Successful', success: true };
 };
 
+// Login
 export const login = ({ email, password }) => {
   const users = findFromStorage('users');
 
@@ -48,6 +54,7 @@ export const login = ({ email, password }) => {
   }
 
   delete user.password;
+  // const token = jwt.sign(user, 'secret_token');
 
   return { user, message: 'Login successful', success: true };
 };

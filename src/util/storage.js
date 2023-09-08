@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 
 
 /**
@@ -6,8 +7,10 @@
  * @param {[]} value 
  */
 export const save = (key, value) => {
+  console.log('save-value>>', key, value);
   if (typeof Storage !== 'undefined') {
-    let data = JSON.parse(localStorage.getItem('users')) || [];
+    let data = JSON.parse(localStorage.getItem(key)) || [];
+    console.log('save-data>>', data);
     data.push(value);
     localStorage.setItem(key, JSON.stringify(data));
   }
@@ -33,6 +36,9 @@ export const findFromStorage = (key) => {
 
 
 
+
+
+// local-storage
 /**
  * 
  * @param {string} key 

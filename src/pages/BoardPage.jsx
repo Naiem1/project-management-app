@@ -14,12 +14,34 @@ import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
-import { login, register } from '../util/auth';
+import { getTaskFromDB, postTaskToDB,  } from '../util/taskController';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 200;
 
 const Board = () => {
 
+  const authState = useSelector(state => state.auth);
+  console.log('board', authState);  
+  useEffect(() => {
+    const task = postTaskToDB({
+      title: 'Task1',
+      description: 'Description1',
+      assignedTo: 'user2',
+      user: authState.user,
+      dueDate: '10/12/2020',
+      priority: 'high',
+      status: 'Pending',
+    });
+
+    console.log('post-error', task);
+  }, []);
+
+  useEffect(() => {
+    const task = getTaskFromDB(authState.user.id);
+
+    console.log('getTaskFromDB', task);
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
