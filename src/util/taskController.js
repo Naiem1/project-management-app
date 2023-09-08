@@ -11,7 +11,7 @@ export const postTaskToDB = ({
   user,
 }) => {
   if (!title || !description || !dueDate || !priority || !status) {
-    return { error: true, message: 'Invalid Input' };
+    return [];
   }
 
   console.log('taskController>>', {
@@ -31,7 +31,7 @@ export const postTaskToDB = ({
   console.log('user-check>>', existUser);
 
   if (!existUser) {
-    return { error: true, message: 'Forbidden Access' };
+    return [];
   }
 
   const task = {
@@ -60,13 +60,13 @@ export const getTaskFromDB = (userId) => {
   const user = users?.find((user) => user.id === userId);
 
   if (!user) {
-    return { message: 'Invalid' };
+    return [];
   }
 
   const tasks = findFromStorage('tasks');
   const task = tasks.filter((task) => task.user.id === userId);
   if (!task) {
-    return { error: true, message: 'Task not found' };
+    return [];
   }
 
   console.log(task);

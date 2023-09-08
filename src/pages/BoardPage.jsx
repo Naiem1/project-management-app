@@ -19,6 +19,7 @@ import TaskCard from '../components/TaskCard';
 import UIModal from '../components/UI/UIModal';
 import { getTask } from '../store/slices/tasksSlice';
 import Loading from '../components/Loading';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 200;
 
@@ -58,6 +59,9 @@ const Board = () => {
         }}
       >
         <Toolbar>
+
+          <Typography variant="h6" sx={{color: 'black', mr:3}}><Link to="/register">Register</Link></Typography>
+          <Typography variant="h6" sx={{color: 'black'}}><Link to='/login'>Login</Link></Typography>
           <Typography
             variant="h6"
             noWrap
@@ -67,6 +71,7 @@ const Board = () => {
             {authState.username}
             <br />
             {authState.email}
+            
           </Typography>
         </Toolbar>
       </AppBar>
