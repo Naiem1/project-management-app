@@ -8,8 +8,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
+import { setUser } from '../store/slices/authSlice';
 
 const INITIAL_STATE = {
   username: '',
@@ -18,21 +20,27 @@ const INITIAL_STATE = {
 };
 
 const Register = () => {
-  const [register, setRegister] = useState({ ...INITIAL_STATE });
+  const [formData, setFormData] = useState({ ...INITIAL_STATE });
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
 
   const registerChangeHandler = (e) => {
-    setRegister({
-      ...register,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
 
-    console.log({ ...register });
+    console.log('formData', { ...formData });
 
-    setRegister({ ...INITIAL_STATE });
+    dispatch(setUser({ ...formData }));
+
+    setFormData({ ...INITIAL_STATE });
   };
+
+  console.log('[Register Page - authState]>>', authState);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -67,7 +75,7 @@ const Register = () => {
             autoComplete="username"
             autoFocus
             onChange={registerChangeHandler}
-            value={register.username}
+            value={formData.username}
           />
 
           <TextField
@@ -81,7 +89,7 @@ const Register = () => {
             autoComplete="email"
             autoFocus
             onChange={registerChangeHandler}
-            value={register.email}
+            value={formData.email}
           />
           <TextField
             margin="normal"
@@ -94,7 +102,7 @@ const Register = () => {
             autoComplete="password"
             autoFocus
             onChange={registerChangeHandler}
-            value={register.password}
+            value={formData.password}
           />
           <Button
             type="submit"
@@ -108,12 +116,10 @@ const Register = () => {
           <Typography component="p">
             <Link to="/login">Already have an account? Sign in</Link>
           </Typography>
-
-        
         </Box>
       </Box>
 
-      <Box sx={{mt: '50px'}}>
+      <Box sx={{ mt: '50px' }}>
         <Box
           sx={{
             display: 'flex',
@@ -124,7 +130,7 @@ const Register = () => {
             cursor: 'pointer',
           }}
         >
-          <Box sx={{ ml: '25px'}}>
+          <Box sx={{ ml: '25px' }}>
             <img style={{ width: '35px' }} src={GoogleLogo} alt="google-logo" />
           </Box>
           <Typography

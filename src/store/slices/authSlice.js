@@ -1,25 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { login, register } from '../../util/auth';
+import {
+  getItemFromLocalStorage,
+  setItemToLocalStorage,
+} from '../../util/storage';
 
+const initialState = {
+  user: getItemFromLocalStorage('user'),
+  status: getItemFromLocalStorage('status'),
+  error: null,
+  success: null,
+};
 
-const initialState = [
-  user: []
-]
-
-
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducer: {
-    setUser: (state, action) => {}
-    clearUser: (state, action) => {},
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(increment, (state, action) => {})
-      .addCase(decrement, (state, action) => {});
+  reducers: {
+    setUser: (state, action) => {
+      const user = register({ ...action.payload });
+      if (user) state.status = 'success';
+
+      setItemToLocalStorage('status', state.status);
+    },
+    loginRequest: (state, action) => {
+      const { user, error } = login({ ...action.payload });
+
+      if (user) {
+        state.user = user;
+        setItemToLocalStorage('user', state.user);
+      }
+
+      if (error.success === false) {
+        state.message = error.message;
+      }
+    },
   },
 });
 
-
-export const {setUser, clearUser } = authSlice.actions;
+export const { setUser, loginRequest } = authSlice.actions;
 export default authSlice.reducer;

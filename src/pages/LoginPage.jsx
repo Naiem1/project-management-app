@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import GoogleLogo from '../assets/images/google-logo.png';
 import { signInWithGoogle } from '../firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRequest, setUser } from '../store/slices/authSlice';
 
 const INITIAL_STATE = {
   email: '',
@@ -20,6 +22,8 @@ const INITIAL_STATE = {
 
 const Login = () => {
   const [credential, setCredential] = useState({ ...INITIAL_STATE });
+  const dispatch = useDispatch();
+  const authState = useSelector(state => state.auth);
 
   const loginChangeHandler = (e) => {
     setCredential({
@@ -32,9 +36,13 @@ const Login = () => {
     event.preventDefault();
 
     console.log({ ...credential });
-    credential({ ...INITIAL_STATE });
+    dispatch(loginRequest({ ...credential }));
+
+    setCredential({ ...INITIAL_STATE });
   };
 
+
+  console.log('[login-page, authState]', authState);
   return (
     <Container component="main" maxWidth="sm">
       <Box

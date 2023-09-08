@@ -13,10 +13,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useEffect } from 'react';
+import { login, register } from '../util/auth';
 
 const drawerWidth = 200;
 
 const Board = () => {
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
