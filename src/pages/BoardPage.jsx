@@ -1,6 +1,6 @@
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import { Grid } from '@mui/material';
+import { Button, Chip, Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,18 +13,40 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import TaskCard from '../components/TaskCard';
+import UIModal from '../components/UI/UIModal';
+import { getTask } from '../store/slices/tasksSlice';
+import Loading from '../components/Loading';
 
 const drawerWidth = 200;
 
 const Board = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
-  const authState = useSelector((state) => state.auth);
-  const task = useSelector((state) => state.tasks.task);
-  console.log('board', authState);
+  const task = useSelector((state) => state?.tasks?.task);
+  const authState = useSelector((state) => state.auth.user);
+
+    // useEffect(() => {
+    //   console.log('Triggered');
+    //   dispatch(getTask({ userId: authState.id }));
+    // }, []);
+
+  // if (!task) {
+  //   return <Loading/>
+  // }
+
+
+  const todoTask = task?.filter((task) => task.status === 'pending');
+  const inProgress = task?.filter((task) => task.status === 'inprogress');
+  const completed = task?.filter((task) => task.status === 'completed');
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <UIModal open={open} handleClose={handleClose} handleOpen={handleOpen} />
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -36,8 +58,15 @@ const Board = () => {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Permanent drawer
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ color: 'gray', ml: 'auto' }}
+          >
+            {authState.username}
+            <br />
+            {authState.email}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -73,21 +102,74 @@ const Board = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, pt: 5, px: 1 }}>
         <Toolbar />
-        <Grid container textAlign="center">
-          <Grid item xs={12} md={4} border="1px solid">
-            <Typography component="p" variant="h6">
-              TODO
-            </Typography>
+        <Grid container>
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', px: 2 }}
+            >
+              <Chip label="Pending" color="error" />
+
+              <Button
+                size="small"
+                variant="contained"
+                sx={{ fontSize: '10px' }}
+                onClick={handleOpen}
+              >
+                Add New Task
+              </Button>
+            </Box>
+
+            <Box sx={{ height: '80vh', overflowY: 'scroll' }}>
+              <Box sx={{ mt: 5, px: 2 }}>
+                {todoTask.map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
+              </Box>
+            </Box>
           </Grid>
-          <Grid item xs={12} md={4} border="1px solid">
-            <Typography component="p" variant="h6">
-              PROGRESS
-            </Typography>
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', px: 2 }}
+            >
+              <Chip label="In Progress" color="warning" />
+              <Button
+                size="small"
+                variant="contained"
+                sx={{ fontSize: '10px' }}
+                onClick={handleOpen}
+              >
+                Add New Task
+              </Button>
+            </Box>
+            <Box sx={{ height: '80vh', overflowY: 'scroll' }}>
+              <Box sx={{ mt: 5, px: 2 }}>
+                {inProgress.map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
+              </Box>
+            </Box>
           </Grid>
-          <Grid item xs={12} md={4} border="1px solid">
-            <Typography component="p" variant="h6">
-              COMPLETED
-            </Typography>
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', px: 2 }}
+            >
+              <Chip label="Completed" color="success" />
+              <Button
+                size="small"
+                variant="contained"
+                sx={{ fontSize: '10px' }}
+                onClick={handleOpen}
+              >
+                Add New Task
+              </Button>
+            </Box>
+            <Box sx={{ height: '80vh', overflowY: 'scroll' }}>
+              <Box sx={{ mt: 5, px: 2 }}>
+                {completed.map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
+              </Box>
+            </Box>
           </Grid>
         </Grid>
       </Box>

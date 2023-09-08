@@ -3,7 +3,11 @@ import {
   getItemFromLocalStorage,
   setItemToLocalStorage,
 } from '../../util/storage';
-import { getTaskFromDB, postTaskToDB } from '../../util/taskController';
+import {
+  deleteTaskFromDB,
+  getTaskFromDB,
+  postTaskToDB,
+} from '../../util/taskController';
 
 const initialState = {
   task: getItemFromLocalStorage('task'),
@@ -14,25 +18,47 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {
     createTask: (state, action) => {
-      const task = postTaskToDB({ ...action.payload });
-    },
-    addToTask: (state, action) => {
-      // const task = postTasks({ ...action.payload });
-      // if (task?.created) {
-      //   const tasks = findFromStorage('tasks');
-      //   const findTask =tasks.filter(task => task.)
-      // }
-    },
-    getTask: (state, action) => {
+      console.log(action.payload);
+      postTaskToDB({ ...action.payload.task });
+
       const task = getTaskFromDB(action.payload.userId);
+
       if (task) {
         state.task = task;
       }
 
       setItemToLocalStorage('task', state.task);
     },
-    updateTask: (state, action) => {},
-    deleteTask: (state, action) => {},
+   
+    getTask: (state, action) => {
+      console.log(action.payload.userId);
+      const task = getTaskFromDB(action.payload.userId);
+
+      if (task) {
+        state.task = task;
+      }
+
+      setItemToLocalStorage('task', state.task);
+    },
+    updateTask: (state, action) => {
+      const updatedTask = action.payload.updatedTask;
+      console.log('reducer', updatedTask)
+      const updated = state.task.map(task => {
+        return task.id === updatedTask.id ? updatedTask : task;
+      })
+
+      state.task = updated;
+
+      setItemToLocalStorage('task', state.task);
+
+    },
+    deleteTask: (state, action) => {
+      const task = state.task.filter((tsk) => tsk.id !== action.payload.taskId);
+      state.task = task;
+      setItemToLocalStorage('task', state.task);
+
+      deleteTaskFromDB(action.payload.taskId);
+    },
   },
 });
 
